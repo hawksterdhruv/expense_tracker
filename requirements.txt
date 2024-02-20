@@ -1,0 +1,6 @@
+flask
+flask-restful
+pymysql
+SQLAlchemy
+flask-sqlalchemy
+marshmallow_sqlalchemy
