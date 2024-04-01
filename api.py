@@ -1,14 +1,14 @@
 import logging
 
-from flask import request, redirect, jsonify
+from flask import request, redirect, jsonify, url_for
 from flask_restful import Resource, Api
 
 from db import db
 from models import Item, Bill
 from schemas import ItemSchema, BillSchema
 
-logging.basicConfig(level=logging.DEBUG)
-
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 api = Api()
 
 
@@ -41,7 +41,7 @@ class ItemsApi(Resource):
         item_obj = self.item_schema.load(request.json, session=db.session)
         db.session.add(item_obj)
         db.session.commit()
-        return redirect(api.url_for(resource=ItemApi, item_id=item_obj.id))
+        return redirect(url_for('apis.itemapi', item_id=item_obj.id))
 
 
 class BillApi(Resource):
@@ -70,7 +70,10 @@ class BillsApi(Resource):
         return self.bill_schema.dump(temp, many=True)
 
     def post(self):
-        bill_obj = self.bill_schema.load(request.json, session=db.session)
+        bill_raw = request.json
+        logger.debug("Incoming data : %s", bill_raw)
+        bill_obj = self.bill_schema.load(bill_raw, session=db.session)
         db.session.add(bill_obj)
         db.session.commit()
-        return redirect(api.url_for(resource=BillApi, bill_id=bill_obj.id))
+        logger.debug("Created new bill object %s", bill_obj)
+        return redirect(url_for('apis.billapi', bill_id=bill_obj.id))

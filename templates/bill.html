@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col">
+    <form id="bill-form">
+      <div id="successAlert" class="alert alert-success alert-dismissible fade" role="alert" style="display: none;">
+        <strong>Success!</strong> Your bill has been submitted successfully.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+      <div class="form-group">
+        <label for="dateOfExpense">Date of Expense</label>
+        <input type="date" class="form-control" id="dateOfExpense" placeholder="Enter date of expense">
+      </div>
+      <div class="form-group">
+        <label for="taxAmount">Tax Amount</label>
+        <input type="number" step="0.01" class="form-control" id="taxAmount" placeholder="Enter tax amount">
+      </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input type="text" class="form-control" id="image" placeholder="Enter image file location">
+      </div>
+      <div class="form-group">
+        <label for="rawImage">Raw Image</label>
+        <input type="text" class="form-control" id="rawImage" placeholder="Enter raw image file location">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

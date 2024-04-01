@@ -15,21 +15,7 @@ class Item(db.Model):
     amount: Mapped[float]
     bill_id: Mapped[int] = mapped_column(ForeignKey("bill.id"))
 
-    # tag:Mapped[List[Tag]] =
-    # def to_dict(self):
-    #     return {
-    #         'id': self.id,
-    #         'name': self.name,
-    #         'amount': self.amount,
-    #         'date_of_expense': self.date_of_expense
-    #     }
-    #
-    # @classmethod
-    # def from_dict(cls, data):
-    #     return cls(**data)
-
     def __repr__(self):
-        # <ExpenseModel(name={self.name}, amount={self.amount}, date_of_expense={self.date_of_expense}>
         return f"<{self.__class__.__name__}(name='{self.name}')>"
 
 
@@ -43,6 +29,9 @@ class Bill(db.Model):
     items: Mapped[list[Item]] = relationship()
     image: Mapped[str] = mapped_column(String(200))  # file location of the bill image
     raw_image: Mapped[str] = mapped_column(String(200))
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__}(id='{self.id}')>"
 
 
 class Tag(db.Model):
