@@ -1,9 +1,15 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
-from models import ExpenseModel
+from models import Item, Bill
 
 
-class ExpenseSchema(SQLAlchemyAutoSchema):
+class ItemSchema(SQLAlchemyAutoSchema):
     class Meta:
-        model = ExpenseModel
+        model = Item
+        load_instance = True
+        include_fk = True
+
+class BillSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Bill
         load_instance = True
