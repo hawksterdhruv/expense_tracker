@@ -1,11 +1,13 @@
 import logging
+import os
 
-from flask import request, redirect, jsonify, url_for
+from flask import request, redirect, jsonify, url_for, current_app
 from flask_restful import Resource, Api
+from werkzeug.utils import secure_filename
 
 from db import db
-from models import Item, Bill
-from schemas import ItemSchema, BillSchema
+from models import Item, Bill, UnprocessedBill
+from schemas import ItemSchema, BillSchema, UnprocessedBillSchema
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -77,3 +79,33 @@ class BillsApi(Resource):
         db.session.commit()
         logger.debug("Created new bill object %s", bill_obj)
         return redirect(url_for('apis.billapi', bill_id=bill_obj.id))
+
+
+class UnprocessedBillsApi(Resource):
+    unprocessed_bill_schema = UnprocessedBillSchema()
+
+    def post(self):
+        if (file := request.files.get('file')) is None:
+            return 'No file part in the request.', 400
+
+        if file.filename == '':
+            return 'No selected file.', 400
+
+        if file.filename.rsplit('.')[-1] not in ['jpg', 'png', 'jpeg']:
+            return 'Incorrect file format. Please upload images files (jpg, png, jpeg)', 400
+
+        # TODO : rename file
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        unprocessed_bill = UnprocessedBill()
+        unprocessed_bill.raw_image = filepath
+        db.session.add(unprocessed_bill)
+        db.session.commit()
+        return jsonify({'unprocessed_bill.id': unprocessed_bill.id})
+
+    def get(self):
+        temp = db.session.query(UnprocessedBill)
+        # logger.debug(temp[0].raw_image)
+        return self.unprocessed_bill_schema.dump(temp, many=True)

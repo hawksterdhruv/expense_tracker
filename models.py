@@ -28,7 +28,6 @@ class Bill(db.Model):
     tax_amount: Mapped[float]
     items: Mapped[list[Item]] = relationship()
     image: Mapped[str] = mapped_column(String(200))  # file location of the bill image
-    raw_image: Mapped[str] = mapped_column(String(200))
 
     def __repr__(self):
         return f"<{self.__class__.__name__}(id='{self.id}')>"
@@ -40,3 +39,11 @@ class Tag(db.Model):
     created_at: Mapped[datetime] = mapped_column(default=datetime.now())
     updated_at: Mapped[datetime] = mapped_column(default=datetime.now())
     name: Mapped[str] = mapped_column(String(50))
+
+
+class UnprocessedBill(db.Model):
+    __tablename__ = 'unprocessed_bill'
+    raw_image: Mapped[str] = mapped_column(String(200))
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now())
+    updated_at: Mapped[datetime] = mapped_column(default=datetime.now())

@@ -18,7 +18,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        {% for item in nav %}
+        {% for item in navs %}
         <li class="nav-item">
           <a class="nav-link" href="{{ item.href }}">{{ item.text }}</a>
         </li>
@@ -40,5 +40,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="static/app.js"></script>
+{% block additional_scripts %}
+{% endblock %}
 </body>
 </html>
