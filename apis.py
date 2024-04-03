@@ -100,7 +100,7 @@ class UnprocessedBillsApi(Resource):
         file.save(filepath)
 
         unprocessed_bill = UnprocessedBill()
-        unprocessed_bill.raw_image = filepath
+        unprocessed_bill.raw_image = filename
         db.session.add(unprocessed_bill)
         db.session.commit()
         return jsonify({'unprocessed_bill.id': unprocessed_bill.id})
