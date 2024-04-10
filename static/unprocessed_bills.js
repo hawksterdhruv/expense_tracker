@@ -12,7 +12,7 @@ $(document).ready(function() {
                 $.each(data, function(i,a) {
                     var temp = $(unprocessed_bills_item_template).find('a');
                     temp.html(a.raw_image);
-                    temp.attr('href', `/bill/${a.raw_image}`);
+                    temp.attr('href', `/bill/${a.id}`);
                     unprocessed_bills_list.append(temp);
                 })
             }

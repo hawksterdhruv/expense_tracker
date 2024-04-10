@@ -23,23 +23,11 @@ def home():
     return render_template('index.html', navs=endpoints)
 
 
-@home_page.route('/bill/<string:fname>')
-def bill(fname: str):
-    return render_template('bill.html', navs=get_navs(), fname=fname)
+@home_page.route('/bill/<int:unprocessed_bill_id>')
+def bill(unprocessed_bill_id: int):
+    return render_template('bill.html', navs=get_navs(), unprocessed_bill_id=unprocessed_bill_id)
 
 
 @home_page.route('/unprocessed-bills')
 def unprocessed_bills():
     return render_template('unprocessed_bills.html', navs=get_navs())
-
-
-@home_page.route('/resources/<string:fname>')
-def resources(fname: str):
-    """
-    CDN method for resource files.
-    Add logic to disallow direct/outside/user access
-    :param fname:
-    :return:
-    """
-    filepath = Path(current_app.config['UPLOAD_FOLDER']) / fname
-    return send_file(filepath)

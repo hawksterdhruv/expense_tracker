@@ -30,6 +30,10 @@ api.add_resource(apis.ItemApi, "/item/<int:item_id>")
 api.add_resource(apis.BillsApi, "/bills")
 api.add_resource(apis.BillApi, "/bill/<int:bill_id>")
 api.add_resource(apis.UnprocessedBillsApi, "/unprocessed-bills")
+api.add_resource(apis.UnprocessedBillApi, "/unprocessed-bill/<int:unprocessed_bill_id>")
+api.add_resource(apis.Process, "/process/<int:unprocessed_bill_id>")
+api.add_resource(apis.Resource, "/resource/<int:unprocessed_bill_id>")
+
 
 app.register_blueprint(api_bp, url_prefix='/api/v1')
 app.register_blueprint(home_page, url_prefix='/')

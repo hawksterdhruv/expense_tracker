@@ -1,38 +1,141 @@
-{% extends "base.html" %}
-
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="row">
-  <div class="col">
-    <form id="bill-form">
-      <div id="successAlert" class="alert alert-success alert-dismissible fade" role="alert" style="display: none;">
-        <strong>Success!</strong> Your bill has been submitted successfully.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-      <div class="form-group">
-        <label for="dateOfExpense">Date of Expense</label>
-        <input type="date" class="form-control" id="dateOfExpense" placeholder="Enter date of expense">
-      </div>
-      <div class="form-group">
-        <label for="taxAmount">Tax Amount</label>
-        <input type="number" step="0.01" class="form-control" id="taxAmount" placeholder="Enter tax amount">
-      </div>
-      <div class="form-group">
-        <label for="image">Image</label>
-        <input type="text" class="form-control" id="image" placeholder="Enter image file location">
-      </div>
-      <div class="form-group">
-        <label for="rawImage">Raw Image</label>
-        <input type="text" class="form-control" id="rawImage" placeholder="Enter raw image file location">
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+  <div class="col-6">
+    <!-- Tab Text and image amount here -->
+    <img
+      class="w-100"
+      src="{{ url_for('apis.resource', unprocessed_bill_id=unprocessed_bill_id) }}"
+    />
   </div>
-  <div class="col w-50">
-    <img class="w-100" src="{{ url_for('home_page.resources', fname=fname) }}">
+  <div class="col-6">
+    <div class="row">
+      <div class="col">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          id="process"
+          data-target="{{unprocessed_bill_id}}"
+        >
+          Process
+        </button>
+        <button type="button" class="btn btn-outline-primary" id="add-bill">
+          Add Bill
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <table class="table table-sm" id="raw-data"></table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <!-- <div class="input-group">
+          <input
+            class="form-control d-none"
+            type="text"
+            id="randomId"
+            placeholder=""
+          />
+        </div> -->
+        
+        
+        
+        
+        
+        <form id="bill-form" action="" class="mt-1">
+          <!-- <div
+            id="successAlert"
+            class="alert alert-success alert-dismissible fade"
+            role="alert"
+            style="display: none"
+          >
+            <strong>Success!</strong> Your bill has been submitted successfully.
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div> -->
+
+          <div class="form-group">
+            <label for="dateOfExpense">Date of Expense</label>
+            <input
+              type="date"
+              class="form-control"
+              id="dateOfExpense"
+              placeholder="Enter date of expense"
+            />
+          </div>
+          <div class="form-group">
+            <label for="taxAmount">Tax Amount</label>
+            <input
+              type="number"
+              step="0.01"
+              class="form-control"
+              id="taxAmount"
+              placeholder="Enter Tax Amount"
+            />
+          </div>
+          <div class="form-group">
+            <label for="totalAmount">Item Amount</label>
+            <input
+              type="number"
+              step="0.01"
+              class="form-control"
+              id="totalAmount"
+              placeholder="Enter Total Amount"
+            />
+          </div>
+          <div class="form-group">
+            <label for="item">Item</label>
+            <input
+              type="text"
+              class="form-control"
+              id="item"
+              placeholder="Enter Item"
+            />
+          </div>
+          <div class="form-group">
+            <label for="itemAmount">Item Amount</label>
+            <input
+              type="number"
+              step="0.01"
+              class="form-control"
+              id="itemAmount"
+              placeholder="Enter Item Amount"
+            />
+          </div>
+          <!-- <div class="form-group">
+            <label for="image">Image</label>
+            <input
+              type="text"
+              class="form-control"
+              id="image"
+              placeholder="Enter image file location"
+            />
+          </div> -->
+          <!-- <div class="form-group">
+            <label for="rawImage">Raw Image</label>
+            <input
+              type="text"
+              class="form-control"
+              id="rawImage"
+              placeholder="Enter raw image file location"
+            />
+          </div> -->
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      
+      
+      
+      </div>
+    </div>
   </div>
 </div>
+{% endblock %} {% block additional_scripts %}
+<script src="/static/bill.js"></script>
 {% endblock %}

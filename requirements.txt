@@ -4,3 +4,6 @@ pymysql
 SQLAlchemy
 flask-sqlalchemy
 marshmallow_sqlalchemy
+
+pytesseract
+Werkzeug

@@ -1,9 +1,13 @@
 import logging
 import os
+import pprint
+from pathlib import Path
 
+from PIL import Image
 from flask import request, redirect, jsonify, url_for, current_app
 from flask_restful import Resource, Api
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename, send_file
+import pytesseract as pt
 
 from db import db
 from models import Item, Bill, UnprocessedBill
@@ -43,7 +47,7 @@ class ItemsApi(Resource):
         item_obj = self.item_schema.load(request.json, session=db.session)
         db.session.add(item_obj)
         db.session.commit()
-        return redirect(url_for('apis.itemapi', item_id=item_obj.id))
+        return redirect(url_for('apis.itemapi', item_id=item_obj.id)), 201
 
 
 class BillApi(Resource):
@@ -103,9 +107,41 @@ class UnprocessedBillsApi(Resource):
         unprocessed_bill.raw_image = filename
         db.session.add(unprocessed_bill)
         db.session.commit()
-        return jsonify({'unprocessed_bill.id': unprocessed_bill.id})
+        return jsonify({'unprocessed_bill.id': unprocessed_bill.id}), 201
 
     def get(self):
         temp = db.session.query(UnprocessedBill)
-        # logger.debug(temp[0].raw_image)
         return self.unprocessed_bill_schema.dump(temp, many=True)
+
+
+class UnprocessedBillApi(Resource):
+    unprocessed_bill_schema = UnprocessedBillSchema()
+
+    def get(self, unprocessed_bill_id):
+        temp = db.get_or_404(UnprocessedBill, unprocessed_bill_id)
+        # logger.debug(temp[0].raw_image)
+        return self.unprocessed_bill_schema.dump(temp)
+
+
+class Process(Resource):
+    def get(self, unprocessed_bill_id: int):
+        unprocessed_bill = db.get_or_404(UnprocessedBill, unprocessed_bill_id)
+        logger.info(pprint.pformat(unprocessed_bill.__dict__))
+        filepath = Path(current_app.config['UPLOAD_FOLDER']) / unprocessed_bill.raw_image
+        img = Image.open(filepath)
+        data = pt.image_to_string(img, lang='eng')
+        data = data.split('\n')
+        return jsonify({"data": data})
+
+
+class Resource(Resource):
+    def get(self, unprocessed_bill_id):
+        """
+        CDN method for resource files.
+        Add logic to disallow direct/outside/user access
+        :param:
+        :return:
+        """
+        temp = db.get_or_404(UnprocessedBill, unprocessed_bill_id)
+        filepath = Path(current_app.config['UPLOAD_FOLDER']) / temp.raw_image
+        return send_file(filepath, environ=request.environ)
