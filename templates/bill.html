@@ -1,11 +1,14 @@
 {% extends "base.html" %} {% block content %}
 <div class="row">
   <div class="col-6">
+    <div id="raw-data">
+    <table class="table table-sm d-none"></table>
     <!-- Tab Text and image amount here -->
     <img
       class="w-100"
       src="{{ url_for('apis.resource', unprocessed_bill_id=unprocessed_bill_id) }}"
     />
+  </div>
   </div>
   <div class="col-6">
     <div class="row">
@@ -18,31 +21,11 @@
         >
           Process
         </button>
-        <button type="button" class="btn btn-outline-primary" id="add-bill">
-          Add Bill
-        </button>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <table class="table table-sm" id="raw-data"></table>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <!-- <div class="input-group">
-          <input
-            class="form-control d-none"
-            type="text"
-            id="randomId"
-            placeholder=""
-          />
-        </div> -->
-        
-        
-        
-        
-        
+
         <form id="bill-form" action="" class="mt-1">
           <!-- <div
             id="successAlert"
@@ -60,54 +43,63 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div> -->
-
-          <div class="form-group">
-            <label for="dateOfExpense">Date of Expense</label>
-            <input
-              type="date"
-              class="form-control"
-              id="dateOfExpense"
-              placeholder="Enter date of expense"
-            />
+          <div class="step">
+            <div class="form-group">
+              <label for="dateOfExpense">Date of Expense</label>
+              <input
+                type="date"
+                class="form-control"
+                id="dateOfExpense"
+                name="dateOfExpense"
+                placeholder="Enter date of expense"
+              />
+            </div>
           </div>
-          <div class="form-group">
-            <label for="taxAmount">Tax Amount</label>
-            <input
-              type="number"
-              step="0.01"
-              class="form-control"
-              id="taxAmount"
-              placeholder="Enter Tax Amount"
-            />
+          <div class="step">
+            <div class="form-group">
+              <label for="taxAmount">Tax Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="taxAmount"
+                name="taxAmount"
+                placeholder="Enter Tax Amount"
+              />
+            </div>
           </div>
-          <div class="form-group">
-            <label for="totalAmount">Item Amount</label>
-            <input
-              type="number"
-              step="0.01"
-              class="form-control"
-              id="totalAmount"
-              placeholder="Enter Total Amount"
-            />
+          <div class="step">
+            <div class="form-group">
+              <label for="totalAmount">Item Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="totalAmount"
+                name="totalAmount"
+                placeholder="Enter Total Amount"
+              />
+            </div>
           </div>
-          <div class="form-group">
-            <label for="item">Item</label>
-            <input
-              type="text"
-              class="form-control"
-              id="item"
-              placeholder="Enter Item"
-            />
-          </div>
-          <div class="form-group">
-            <label for="itemAmount">Item Amount</label>
-            <input
-              type="number"
-              step="0.01"
-              class="form-control"
-              id="itemAmount"
-              placeholder="Enter Item Amount"
-            />
+          <div class="step">
+            <div class="form-group">
+              <label for="item">Item</label>
+              <input
+                type="text"
+                class="form-control"
+                id="item"
+                name="item"
+                placeholder="Enter Item"
+              />
+            </div>
+            <div class="form-group">
+              <label for="itemAmount">Item Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="itemAmount"
+                name="itemAmount"
+                placeholder="Enter Item Amount"
+              />
+            </div>
           </div>
           <!-- <div class="form-group">
             <label for="image">Image</label>
@@ -127,11 +119,10 @@
               placeholder="Enter raw image file location"
             />
           </div> -->
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button id="prev-btn" type="button" class="btn btn-primary">Previous</button>
+          <button id="next-btn" type="button" class="btn btn-primary">Next</button>
+          <button id="submit-btn" type="submit" class="btn btn-primary">Submit</button>
         </form>
-      
-      
-      
       </div>
     </div>
   </div>
